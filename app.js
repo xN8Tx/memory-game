@@ -28,15 +28,28 @@ function randomize() {
 function createCard() {
     let randomizedData = randomize();
     for (let i = 0; i < randomizedData.length; i++) {
+        const cardWrapper = document.createElement('div');
         const card = document.createElement('div');
-        const img = document.createElement('img');
-        
-        card.classList.add('card-hidden');
-        card.id = randomizedData[i].name;
-        img.src = randomizedData[i].imgSrc;
+        const front = document.createElement('div');
+        const back = document.createElement('div');
+        const questionImg = document.createElement('img');
+        const cardImage = document.createElement('img');
 
-        card.append(img);
-        table.append(card)
+        questionImg.src = 'image/question.png';
+        cardImage.src = randomizedData[i].imgSrc;
+        
+        cardWrapper.classList.add('card-wrapper-hidden');
+        cardWrapper.setAttribute('name', randomizedData[i].name); 
+        card.classList.add('card');
+        front.classList.add('front');
+        back.classList.add('back');
+
+        front.appendChild(questionImg);
+        back.appendChild(cardImage);
+        card.appendChild(front);
+        card.appendChild(back);
+        cardWrapper.appendChild(card);
+        table.appendChild(cardWrapper);
     }
 }
 
@@ -48,23 +61,24 @@ let choosenCard = [],
 
 // showCard
 table.addEventListener('click', (e) => {
-    if (e.target.classList.contains('card-hidden')){
+    let target = e.target.parentNode.parentNode.parentNode; // fuck this shit
+    if (target.classList.contains('card-wrapper-hidden')){
         compareCard()
-        e.target.classList.add('active');
-        choosenCard.push(e.target);
+        target.classList.add('active');
+        choosenCard.push(target);
     }
 });
 
 //compare card.2
 function compareCard() {
-    const cards = document.querySelectorAll('.card-hidden')
+    const cards = document.querySelectorAll('.card-wrapper-hidden')
     if (choosenCard.length >= 2) {
-        if (choosenCard[0].id == choosenCard[1].id) {
+        if (choosenCard[0].getAttribute('name') == choosenCard[1].getAttribute('name')) {
             shownCard.push(choosenCard[0], choosenCard[1]);
             choosenCard.forEach((card) => {
                 card.classList.remove('active');
-                card.classList.remove('card-hidden');
-                card.classList.add('card-shown');
+                card.classList.remove('card-wrapper-hidden');
+                card.classList.add('card-wrapper-shown');
             });
             choosenCard = [];
             updateCounter();

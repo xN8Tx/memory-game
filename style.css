@@ -17,51 +17,84 @@ body {
 
 .table {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
-    width: 550px;
-    height: 360px;
+    justify-content: center;
+    width: 530px;
+    height: auto;
     padding: 10px;
     background-color: rgb(40, 40, 40);
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
-.card-hidden {
-    transform-style: preserve-3d ;
+.card-wrapper-hidden {
     width: 100px;
     height: 100px;
-    background-color: rgb(248, 248, 0);
-    border-radius: 10px;
-    margin: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 15px;
+    perspective: 1000px;
+
 }
-.card-hidden img {
-    display: none;
-    width: 80px;
-    height: 80px;
-}
-.card-hidden.active img {
-    display: block;
-    transform: rotate3d(350deg);
+.card-wrapper-hidden.active .card {
+    transform: rotateY(180deg);
 }
 
-.card-shown {
+.card-wrapper-shown {
     width: 100px;
     height: 100px;
-    background-color: rgb(248, 248, 0);
-    border-radius: 10px;
-    margin: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 15px;
+    perspective: 1000px;
 }
-.card-shown img {
-    display: block;
-    width: 80px;
-    height: 80px;
+
+.card-wrapper-hidden .card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all ease-in 0.5s;
+}
+
+.card-wrapper-shown .card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all ease-in 1s;
+}
+
+.front, .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.front img, .back img{
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+}
+.card-wrapper-hidden .front {
+    background-color: white;
+}
+.card-wrapper-hidden .back {
+    background-color: white;   
+    transform: rotateY(180deg); 
+}
+
+.card-wrapper-shown .front {
+    background-color: white;
+    transform: rotateY(180deg) rotateX(360deg);
+}
+
+.card-wrapper-shown .back {
+    background-color: white;
 }
